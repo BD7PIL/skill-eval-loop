@@ -38,10 +38,14 @@ def ok(msg):
     print('[ok] %s' % msg)
 
 
-def run_cmd(cmd, timeout=120):
-    """Run command, return (exit_code, stdout_text)."""
+def run_cmd(cmd, timeout=120, shell=False, cwd=None):
+    """Run command, return (exit_code, stdout_text).
+    cmd may be a list (no shell) or a string (shell=True)."""
     try:
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if isinstance(cmd, str):
+            shell = True
+        p = subprocess.Popen(cmd, shell=shell, stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE, cwd=cwd)
         out, err = p.communicate(timeout=timeout)
         return p.returncode, (out + err).decode('utf-8', 'replace')
     except subprocess.TimeoutExpired:
@@ -157,7 +161,7 @@ def l1_static(project, assert_file):
         with open(assert_file) as f:
             asserts = json.load(f)
         for a in asserts:
-            rc, out = run_cmd(a['cmd'], timeout=a.get('timeout', 60))
+            rc, out = run_cmd(a['cmd'], timeout=a.get('timeout', 60), cwd=project)
             failed = (rc != 0)
             if a.get('expect_fail') is not None:
                 failed = (failed != bool(a['expect_fail']))
@@ -269,8 +273,13 @@ def main():
             assert_file = sys.argv[i + 1]
             i += 2
         elif a == '--skip':
-            skip = set(sys.argv[i + 1:])
-            break
+            # collect all following tier tokens (L1..L4), then continue parsing
+            # other options that may follow
+            j = i + 1
+            while j < len(sys.argv) and sys.argv[j].startswith('L'):
+                skip.add(sys.argv[j])
+                j += 1
+            i = j
         else:
             i += 1
     device = derive_device(project, device)
