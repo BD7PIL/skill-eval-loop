@@ -149,9 +149,9 @@ def l1_static(project, assert_file):
         # P4: no ±MAX placeholder limits
         pmax = [r for r in data if '1.7976931348623157E308' in r]
         if pmax:
-            fail(1, 'ODS has %d ±MAX placeholder limit rows' % len(pmax))
+            fail(1, 'ODS has %d +/-MAX placeholder limit rows' % len(pmax))
         else:
-            ok('ODS no ±MAX placeholders')
+            ok('ODS no +/-MAX placeholders')
     # Custom asserts from --assert-file (JSON list of {"name","cmd","expect_fail"})
     if assert_file and os.path.isfile(assert_file):
         with open(assert_file) as f:
