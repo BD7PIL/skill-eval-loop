@@ -12,8 +12,12 @@ L1 default asserts come from the assertion pattern library (assertions.md);
 override/extend via --assert-file <json>.
 
 Usage:
-  python3 run_evals.py <project_root> <prog_rel> [--device NAME] [--skip L1 L2 L3 L4]
+  python3 run_evals.py <project_root> <prog> [--device NAME] [--skip L1 L2 L3 L4]
                        [--assert-file asserts.json] [--bridge /path/to/eclipse_bridge.py]
+
+<prog> = path to the .prog file relative to the WORKSPACE (the bridge run command
+needs the project folder prefix), e.g. MyDevice/src/MyDevice/TestProgram/MyT10.prog.
+A project-relative path (src/MyDevice/...) is auto-normalized to workspace-relative.
 Exit code: 0 = all green, 1 = any fail. Python 3.6 compatible (no f-strings,
 no capture_output, no text=True).
 """
@@ -283,6 +287,10 @@ def main():
         else:
             i += 1
     device = derive_device(project, device)
+    # L4 needs a workspace-relative .prog path (project folder prefix). Accept
+    # a project-relative path too and normalize it (see <prog> in usage).
+    if not prog.startswith(device + '/'):
+        prog = device + '/' + prog
     print('project=%s device=%s bridge=%s' % (project, device, os.path.basename(bridge)))
     if 'L1' not in skip:
         l1_static(project, assert_file)
