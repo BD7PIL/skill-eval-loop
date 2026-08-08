@@ -1,20 +1,34 @@
 ---
 name: skill-eval-loop
 description: >-
-  Meta-skill for closed-loop validation and optimization of Agent Skills. Use when
-  developing, debugging, optimizing, or validating an Agent Skill — especially
-  complex-domain skills (generating DSL/code/test programs, depending on real
-  compilers or runtimes), or when "the skill's documented rules disagree with real
-  tool behavior", "repeated full reruns keep exposing new defects", or "unsure
-  whether a skill edit actually improved it". Guides the agent through dry-run
-  round-based closure: fresh-agent isolated rerun → orchestrator attribution →
-  skill fix → defect frozen as regression assertion → tiered validation
-  (static/syntax/compile/run) until the skill document independently produces a
-  runnable result from a fresh agent. Complements skill-creator (from-scratch
-  authoring): this skill validates and optimizes EXISTING skills. Note: this is a
-  methodology guide — it does not replace domain-specific verifiers (compilers,
-  LSP, Eclipse bridge); it teaches how to organize them into tiered acceptance
-  gates.
+  Meta-skill for closed-loop validation and optimization of EXISTING Agent Skills
+  (complex domains: DSL/code/test-program generation, real compiler/runtime
+  dependencies). USE THIS whenever ANY of these appear:
+
+  - User is developing, debugging, or validating an Agent Skill (not the
+    business task the skill produces — the skill itself)
+  - "the skill's documented rules disagree with real tool behavior", "the skill
+    keeps failing after reruns", "every round exposes new defects", "unsure
+    whether an edit actually improved the skill"
+  - Reviewing/improving a skill's docs, references, or prompts; planning a
+    dry-run validation of a skill; setting up regression/evals for a skill
+  - A skill fails in ways that look like doc defects (rules wrong/vague/missing)
+    rather than execution errors
+  - User mentions: "skill 开发", "skill 调试", "skill 验证", "dry run",
+    "fresh agent 重跑", "回归断言", "grader", "方法学"
+
+  Do NOT use for: the business task the skill performs (e.g. generating a test
+  program — that is the business skill's job, e.g. v93k-smartest8-dev);
+  from-scratch skill authoring (that is skill-creator).
+
+  What it does: guides the agent through dry-run round-based closure —
+  fresh-agent isolated rerun → orchestrator attribution (three-way: doc defect /
+  execution error / environment) → skill fix → defect frozen as regression
+  assertion → tiered validation (L1 static → L2 syntax → L3 build → L4 run =
+  the ONLY pass definition) — until the skill doc independently produces a
+  runnable result from a fresh agent. Complements skill-creator (authoring).
+  Methodology guide only: domain verifiers (compilers, LSP, Eclipse bridge) are
+  injected by the consuming project.
 ---
 
 # Skill Eval Loop — Meta-skill for Closed-Loop Skill Validation & Optimization
