@@ -138,7 +138,7 @@ Defect → assertion extraction patterns:
 - `scripts/run_evals.py` — grader-pyramid executor (configurable L1 static asserts
   + L2-L4 calling domain verifiers). Domain verifiers injected via params
   (bridge/compile/run commands).
-- `scripts/new-protocol.py` — generates a dry-run protocol skeleton +
+- `scripts/init-protocol.py` — generates a dry-run protocol skeleton +
   EXECUTION_LOG template for a new skill.
 
 ## Gotchas (battle-tested)

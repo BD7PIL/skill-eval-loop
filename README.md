@@ -37,7 +37,7 @@ skills/skill-eval-loop/
 │   └── case_study_wlg5144.md     # first application (R1-R6)
 └── scripts/
     ├── run_evals.py              # grader-pyramid executor (parameterized)
-    └── new-protocol.py           # protocol skeleton generator
+    └── init-protocol.py           # protocol skeleton generator
 ```
 
 Complements [skill-creator](https://github.com/anthropics/skills) (authoring);
@@ -54,7 +54,7 @@ ln -s ../../../../tools/skill-eval-loop/skills/skill-eval-loop <project>/.agents
 ## Quick start
 
 ```bash
-python3 skills/skill-eval-loop/scripts/new-protocol.py my-skill /tmp/out
+python3 skills/skill-eval-loop/scripts/init-protocol.py my-skill /tmp/out
 python3 skills/skill-eval-loop/scripts/run_evals.py <project_root> <prog_rel> \
     [--device NAME] [--assert-file asserts.json] [--skip L1 L2 L3 L4]
 ```
